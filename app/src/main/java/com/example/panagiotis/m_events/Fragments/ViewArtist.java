@@ -2,6 +2,7 @@ package com.example.panagiotis.m_events.Fragments;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.panagiotis.m_events.CustomTextView;
 import com.example.panagiotis.m_events.MainActivity;
 import com.example.panagiotis.m_events.R;
+import com.example.panagiotis.m_events.Realm_Models.LastFM_models.Temp_Realm;
 import com.example.panagiotis.m_events.adapters.button_tags_adapter;
 import com.example.panagiotis.m_events.adapters.similar_trags_adaptor;
 import com.example.panagiotis.m_events.getLastFMData.IContract_GetLastFM;
@@ -29,6 +31,8 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,15 +42,18 @@ public class ViewArtist extends Fragment implements IContract_GetLastFM.IView_Da
     private String artist;
     private IContract_GetLastFM.IPresenter_DataLastFM iPresenter_dataLastFM;
     private ProgressDialog pDialog;
+    private Realm realm;
 
     @BindView(R.id.imageView_viewArtist) ImageView viewArtistImage;
     @BindView(R.id.viewArtist_ArtistName) CustomTextView ArtistName;
     @BindView(R.id.viewArtist_bio) TextView viewArtistBio;
     @BindView(R.id.recycleView_viewArtist_tag) RecyclerView viewArtist_tag;
     @BindView(R.id.recycleView_viewArtist_similar) RecyclerView viewArtistSimilar;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     button_tags_adapter buttonTagsAdapter;
     similar_trags_adaptor similarTragsAdaptor;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,15 @@ public class ViewArtist extends Fragment implements IContract_GetLastFM.IView_Da
         Bundle b = getArguments();
         artist=b.getString("artists");
         iPresenter_dataLastFM.getArtistInfo(artist);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                realm = Realm.getDefaultInstance();
+                RealmResults<Temp_Realm> temp_realms = realm.where(Temp_Realm.class).findAll();
+                ((MainActivity)getActivity()).fragment_transfer(new ArtistCalendar(),temp_realms.get(0).getTempID(),temp_realms.get(0).getTempImage());
+            }
+        });
         return v;
     }
 

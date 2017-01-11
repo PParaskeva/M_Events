@@ -18,6 +18,7 @@ public class Constants {
 
     public static final String BASE_SongKick_URL="http://api.songkick.com/api/3.0/";
     public static final String songKick_extend="events.json";
+    public static final String songKick_Calendar="calendar.json";
 
     public static final String lastFM_method_geo_gettopartists="geo.gettopartists";
     public static final String lastFM_method_trackInfo="track.getInfo";
@@ -32,6 +33,6 @@ public class Constants {
 
     public static final String api_key_SongKick="RSK2Ccn5zSk4OIDN";
 
-
+    public static String ArtistMid="";
 
 }

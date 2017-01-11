@@ -37,6 +37,7 @@ public class Profile_Facebook extends Fragment {
     @BindView(R.id.FacebookProfileLocation) TextView location;
     @BindView(R.id.FacebookProfileRecycleView) RecyclerView facebookRecycleViewTags;
 
+
     private FavorityTags_adaptor adaptor;
 
     private Realm realm;
@@ -46,10 +47,9 @@ public class Profile_Facebook extends Fragment {
         View v=inflater.inflate(R.layout.fragment_profile__facebook, container, false);
         ButterKnife.bind(this,v);
         DisplayMetrics displaymetrics = new DisplayMetrics();
-        int width = displaymetrics.widthPixels;
         realm = Realm.getDefaultInstance();
 
-        for (Facebook_User_Details facebook_user_details : realm.where(Facebook_User_Details.class).findAll()) {
+        for (final Facebook_User_Details facebook_user_details : realm.where(Facebook_User_Details.class).findAll()) {
             name.setText("Name :"+facebook_user_details.getName());
             lastName.setText(facebook_user_details.getLastName());
 
@@ -58,6 +58,7 @@ public class Profile_Facebook extends Fragment {
                     .fit()
                     .centerCrop()
                     .into(profile_picture);
+
 
         }
         RealmResults<location_Realm> resultsLocation = realm.where(location_Realm.class).findAll();

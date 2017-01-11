@@ -13,6 +13,7 @@ import com.example.panagiotis.m_events.Realm_Models.location_Realm;
 import com.example.panagiotis.m_events.getSongKickData.IContract_GetSoncKick;
 import com.example.panagiotis.m_events.getSongKickData.SongKick_Presenter;
 import com.example.panagiotis.m_events.pojo.eventFull_pojo.songkick.Example_songkick;
+import com.example.panagiotis.m_events.pojo.eventFull_pojo.songkick.SongKick_ArtistCalendar.Example_ArtistCalendar;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -44,6 +45,21 @@ public class EventsNextToMe extends Fragment implements IContract_GetSoncKick.IV
     public void displayEventsNextToMe(Example_songkick example_songkick) {
         Intent i = new Intent(getActivity(), ClusterActivity.class);
         startActivity(i);
+    }
+
+    @Override
+    public void displayArtistCalendar(Example_ArtistCalendar example_artistCalendar) {
+
+    }
+
+    @Override
+    public void showProgressDialog() {
+
+    }
+
+    @Override
+    public void dismissProgressDialog() {
+
     }
 
 

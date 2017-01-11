@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.panagiotis.m_events.Fragments.FavorityArtists;
@@ -28,6 +29,7 @@ import com.example.panagiotis.m_events.Fragments.Profile_Facebook;
 import com.example.panagiotis.m_events.Fragments.SearchResults;
 import com.example.panagiotis.m_events.Fragments.top_artists;
 import com.example.panagiotis.m_events.Fragments.top_tracks;
+import com.example.panagiotis.m_events.Realm_Models.Facebook_User_Details;
 import com.example.panagiotis.m_events.Realm_Models.LastFM_models.FavoriteArtists_Realm;
 import com.example.panagiotis.m_events.Realm_Models.LastFM_models.FavotiteTracks_Realm;
 import com.example.panagiotis.m_events.Realm_Models.LastFM_models.Temp_Realm;
@@ -36,6 +38,7 @@ import com.facebook.AccessToken;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.List;
@@ -52,30 +55,25 @@ public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener {
 
     private DrawerLayout drawerLayout;
-    //private NavigationView navigationView;
+
     @BindView(R.id.navigation_view)NavigationView navigationView;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    //private Toolbar toolbar;
+    @BindView(R.id.Header_ImageView) ImageView headerImageView;
     private Realm realm;
 
     //Variable for the location of the user
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    private String latitude = "";
-    private String longitude = "";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //FlurryAgent.init(getApplicationContext(),"QSKPD6C7CFC32RJX2SZP");
         ButterKnife.bind(this);
         buildGoogleApiClient();
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -83,24 +81,25 @@ public class MainActivity extends AppCompatActivity implements
                 if (menuItem.isChecked()) menuItem.setChecked(false);
                 else menuItem.setChecked(true);
                 drawerLayout.closeDrawers();
+                if(isLoggedIn()) {
+                    if (menuItem.getItemId() == R.id.Profle) {
+                        fragment_transfer(new Profile_Facebook());
+                    }
 
-                if (menuItem.getItemId() == R.id.Profle) {
-                    fragment_transfer(new Profile_Facebook());
-                }
+                    if (menuItem.getItemId() == R.id.top_Artists) {
+                        fragment_transfer(new top_artists());
+                    }
 
-                if (menuItem.getItemId() == R.id.top_Artists) {
-                    fragment_transfer(new top_artists());
-                }
+                    if (menuItem.getItemId() == R.id.top_Songs) {
+                        fragment_transfer(new top_tracks());
+                    }
 
-                if (menuItem.getItemId() == R.id.top_Songs) {
-                    fragment_transfer(new top_tracks());
-                }
-
-                if (menuItem.getItemId() == R.id.FavorityMusic) {
-                    fragment_transfer(new FavorityTracks());
-                }
-                if (menuItem.getItemId() == R.id.FavorityArtists) {
-                    fragment_transfer(new FavorityArtists());
+                    if (menuItem.getItemId() == R.id.FavorityMusic) {
+                        fragment_transfer(new FavorityTracks());
+                    }
+                    if (menuItem.getItemId() == R.id.FavorityArtists) {
+                        fragment_transfer(new FavorityArtists());
+                    }
                 }
                 return true;
             }
@@ -126,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements
         actionBarDrawerToggle.syncState();
 
         if (isLoggedIn()) {
+            RealmResults<Facebook_User_Details> results = realm.where(Facebook_User_Details.class).equalTo("age", 99).findAll();
+            Picasso.with(getApplicationContext())
+                    .load(results.get(0).getProfilePictureUrl())
+                    .fit()
+                    .centerCrop()
+                    .into(headerImageView);
+
             fragment_transfer(new Profile_Facebook());
         } else {
             fragment_transfer(new Login_Fragment());
@@ -146,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         Fragment fragment;
         fragment = f;
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
     }
@@ -159,6 +166,20 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment;
         fragment = f;
         fragment.setArguments(args);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.frame, fragment);
+        fragmentTransaction.commit();
+    }
+
+    public void fragment_transfer(Fragment f, String id, String imageURL) {
+        Bundle args = new Bundle();
+        args.putString("ArtistID", id);
+        args.putString("imageURL", imageURL);
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        Fragment fragment;
+        fragment = f;
+        fragment.setArguments(args);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
     }
@@ -170,6 +191,7 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment;
         fragment = f;
         fragment.setArguments(args);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.replace(R.id.frame, fragment);
         fragmentTransaction.commit();
     }

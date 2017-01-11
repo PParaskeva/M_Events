@@ -6,6 +6,7 @@ import com.example.panagiotis.m_events.Realm_Models.SongKick.SongKick_Event_Real
 import com.example.panagiotis.m_events.Services.songkick.IData_Songkick;
 import com.example.panagiotis.m_events.Services.songkick.Songkick_Connection;
 import com.example.panagiotis.m_events.pojo.eventFull_pojo.songkick.Example_songkick;
+import com.example.panagiotis.m_events.pojo.eventFull_pojo.songkick.SongKick_ArtistCalendar.Example_ArtistCalendar;
 
 import io.realm.Realm;
 import rx.Observer;
@@ -21,7 +22,30 @@ public class SongKick_Presenter implements IContract_GetSoncKick.IPresenter_Song
     public SongKick_Presenter(IContract_GetSoncKick.IView_SongKick iView_songKick) {
         this.iView_songKick = iView_songKick;
     }
+    @Override
+    public void getArtistCalendar() {
+        iView_songKick.showProgressDialog();
+        iData_songkick=Songkick_Connection.getSongKickCallendar();
+        iData_songkick.GetArtistCalendar(Constants.api_key_SongKick)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Example_ArtistCalendar>() {
+                    @Override
+                    public void onCompleted() {
+                        iView_songKick.dismissProgressDialog();
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        iView_songKick.dismissProgressDialog();
+                    }
+
+                    @Override
+                    public void onNext(Example_ArtistCalendar example_artistCalendar) {
+                        iView_songKick.displayArtistCalendar(example_artistCalendar);
+                    }
+                });
+    }
     @Override
     public void getEventsNextToMe(String location) {
         iData_songkick= Songkick_Connection.getSongKickonnection();
@@ -58,7 +82,6 @@ public class SongKick_Presenter implements IContract_GetSoncKick.IPresenter_Song
                             }
                         });
 
-
                         realm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
@@ -82,17 +105,14 @@ public class SongKick_Presenter implements IContract_GetSoncKick.IPresenter_Song
                                         songKickArtistRealm.setArtistName(example_songkick.getResultsPage().getResults().getEvent().get(i).getPerformance().get(j).getDisplayName());
                                         songKickArtistRealm.setVenueName(example_songkick.getResultsPage().getResults().getEvent().get(i).getVenue().getDisplayName());
                                     }
-
                                 }
                             }
                         });
-
-
                         //iView_songKick.displayEventsNextToMe(example_songkick);
-
                     }
                 });
     }
+
 
     @Override
     public void start() {

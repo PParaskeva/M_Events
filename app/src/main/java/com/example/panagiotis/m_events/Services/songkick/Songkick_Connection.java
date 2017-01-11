@@ -27,6 +27,20 @@ public class Songkick_Connection {
                 .build();
 
         return retrofit.create(IData_Songkick.class);
+    }
 
+    public static IData_Songkick getSongKickCallendar(){
+        HttpLoggingInterceptor interceptor= new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        okHttpClient= new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
+        retrofit=new Retrofit.Builder()
+                .baseUrl(Constants.BASE_SongKick_URL+Constants.ArtistMid)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+
+        return retrofit.create(IData_Songkick.class);
     }
 }

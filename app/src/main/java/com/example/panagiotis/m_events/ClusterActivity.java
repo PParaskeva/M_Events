@@ -6,6 +6,7 @@ import com.example.panagiotis.m_events.Realm_Models.location_Realm;
 import com.example.panagiotis.m_events.getSongKickData.IContract_GetSoncKick;
 import com.example.panagiotis.m_events.getSongKickData.SongKick_Presenter;
 import com.example.panagiotis.m_events.pojo.eventFull_pojo.songkick.Example_songkick;
+import com.example.panagiotis.m_events.pojo.eventFull_pojo.songkick.SongKick_ArtistCalendar.Example_ArtistCalendar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -20,9 +21,7 @@ import io.realm.RealmResults;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Created by Panagiotis on 06/01/2017.
- */
+
 
 public class ClusterActivity extends MapsActivity implements IContract_GetSoncKick.IView_SongKick {
     private ClusterManager<MyItem> clusterManager;
@@ -68,6 +67,21 @@ public class ClusterActivity extends MapsActivity implements IContract_GetSoncKi
 
     @Override
     public void displayEventsNextToMe(Example_songkick example_songkick) {
+
+    }
+
+    @Override
+    public void displayArtistCalendar(Example_ArtistCalendar example_artistCalendar) {
+
+    }
+
+    @Override
+    public void showProgressDialog() {
+
+    }
+
+    @Override
+    public void dismissProgressDialog() {
 
     }
 
