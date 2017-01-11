@@ -109,6 +109,7 @@ public class Login_Fragment extends Fragment implements IContract_Facebook.IView
 
     @Override
     public void displayProfile() {
+        ((MainActivity) getActivity()).firstTimeLoggin();
         ((MainActivity)getActivity()).nextActivity();
         Toast.makeText(getActivity(), "Logging in...", Toast.LENGTH_SHORT).show();
     }

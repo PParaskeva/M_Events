@@ -58,8 +58,11 @@ public class MainActivity extends AppCompatActivity implements
 
     @BindView(R.id.navigation_view)NavigationView navigationView;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.Header_ImageView) ImageView headerImageView;
+    //@BindView(R.id.Header_ImageView) ImageView headerImageView;
+    ImageView headerImageView;
+
     private Realm realm;
+    View header;
 
     //Variable for the location of the user
     private GoogleApiClient mGoogleApiClient;
@@ -123,20 +126,37 @@ public class MainActivity extends AppCompatActivity implements
 
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        header = navigationView.getHeaderView(0);
+        headerImageView=(ImageView) header.findViewById(R.id.Header_ImageView);
 
         if (isLoggedIn()) {
-            RealmResults<Facebook_User_Details> results = realm.where(Facebook_User_Details.class).equalTo("age", 99).findAll();
-            Picasso.with(getApplicationContext())
-                    .load(results.get(0).getProfilePictureUrl())
-                    .fit()
-                    .centerCrop()
-                    .into(headerImageView);
+            realm = Realm.getDefaultInstance();
+            RealmResults<Facebook_User_Details> results = realm.where(Facebook_User_Details.class).findAll();
+            if(results.size()>0) {
+                Picasso.with(getApplicationContext())
+                        .load(results.get(0).getProfilePictureUrl())
+                        .fit()
+                        .centerCrop()
+                        .into(headerImageView);
+            }
 
             fragment_transfer(new Profile_Facebook());
         } else {
             fragment_transfer(new Login_Fragment());
         }
 
+    }
+
+    public void firstTimeLoggin() {
+        realm = Realm.getDefaultInstance();
+        RealmResults<Facebook_User_Details> results = realm.where(Facebook_User_Details.class).findAll();
+        if (results.size() > 0) {
+            Picasso.with(getApplicationContext())
+                    .load(results.get(0).getProfilePictureUrl())
+                    .fit()
+                    .centerCrop()
+                    .into(headerImageView);
+        }
     }
 
     private synchronized void buildGoogleApiClient() {
