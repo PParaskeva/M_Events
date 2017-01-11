@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/Profle"
+            android:checked="false"
+            android:title="@string/profile" />
+
+        <item
+            android:id="@+id/FavorityMusic"
+            android:checked="false"
+            android:title="@string/Favorite_Music" />
+
+        <item
+            android:id="@+id/FavorityArtists"
+            android:checked="false"
+            android:title="@string/Favorite_Artist" />
+
+        <item
+            android:id="@+id/top_Songs"
+            android:checked="false"
+            android:title="@string/top_songs" />
+        <item
+            android:id="@+id/top_Artists"
+            android:checked="false"
+            android:title="@string/top_artists" />
+
+    </group>
+</menu>

@@ -1,0 +1,74 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.panagiotis.m_events.Fragments.Profile_Facebook">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="164dp"
+        app:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/FacebookProfileImageView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/FacebookProfileLastName"
+        android:textSize="24sp"
+        android:layout_alignBaseline="@+id/FacebookProfileNmae"
+        android:layout_alignBottom="@+id/FacebookProfileNmae"
+        android:layout_toRightOf="@+id/FacebookProfileNmae"
+        android:layout_toEndOf="@+id/FacebookProfileNmae"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="58dp"
+        android:id="@+id/FacebookProfileNmae"
+        android:textSize="24sp"
+        android:layout_below="@+id/FacebookProfileImageView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/FacebookProfileLocation"
+        android:textSize="24sp"
+        android:layout_below="@+id/FacebookProfileNmae"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="Favority Tags"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/FacebookProfileLocation"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="18dp"
+        android:id="@+id/FacebookProfileTagTextView"
+        android:textSize="24sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/FacebookProfileTagTextView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="13dp"
+        android:id="@+id/FacebookProfileRecycleView" />
+
+</RelativeLayout>
