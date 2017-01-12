@@ -240,9 +240,12 @@ public class MainActivity extends AppCompatActivity implements
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-
-                //Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
-                fragment_transfer(new SearchResults(),query);
+                if(isLoggedIn()) {
+                    fragment_transfer(new SearchResults(), query);
+                }
+                else {
+                    Toast.makeText(getApplicationContext(),"Please login", Toast.LENGTH_SHORT).show();
+                }
 
                 if( ! searchView.isIconified()) {
                     searchView.setIconified(true);
@@ -260,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (isLoggedIn()) {
+
 
         if (item.getItemId() == R.id.eventsNearMe) {
             Class activityClass = ClusterActivity.class;
@@ -267,12 +272,12 @@ public class MainActivity extends AppCompatActivity implements
             return true;
         }
 
-        if(item.getItemId()==R.id.addToFavotite){
+        if (item.getItemId() == R.id.addToFavotite) {
             realm = Realm.getDefaultInstance();
             final RealmResults<Temp_Realm> temp_realms =
                     realm.where(Temp_Realm.class).findAll();
 
-            if(temp_realms.size()!=0) {
+            if (temp_realms.size() != 0) {
                 final RealmResults<FavoriteArtists_Realm> resultsFavorityArtist = realm.where(FavoriteArtists_Realm.class).equalTo("ArtistID", temp_realms.get(0).getTempID()).findAll();
                 final RealmResults<FavotiteTracks_Realm> resultsFavorityTracks = realm.where(FavotiteTracks_Realm.class)
                         .equalTo("TrackName", temp_realms.get(0).getTempName())
@@ -318,6 +323,10 @@ public class MainActivity extends AppCompatActivity implements
                     realm.delete(Temp_Realm.class);
                 }
             });
+        }
+    }
+        else {
+            Toast.makeText(getApplicationContext(),"Please login", Toast.LENGTH_SHORT).show();
         }
 
 

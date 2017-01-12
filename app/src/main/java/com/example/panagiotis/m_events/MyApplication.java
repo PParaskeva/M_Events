@@ -16,6 +16,7 @@ import android.util.Log;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.flurry.android.FlurryAgent;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -39,7 +40,12 @@ public class MyApplication extends Application {
         FacebookSdk.sdkInitialize(getApplicationContext());
         FlurryAgent.init(getApplicationContext(),"QSKPD6C7CFC32RJX2SZP");
         AppEventsLogger.activateApp(this);
-
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
 
         Realm.init(this);
         //printHash();
